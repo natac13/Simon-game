@@ -15,6 +15,7 @@ import remember    from 'gulp-remember';
 import concat      from 'gulp-concat';
 import compass     from 'gulp-compass';
 import browserSync from 'browser-sync';
+import notify      from 'gulp-notify';
 
 const reload      = browserSync.reload;
 const lintOptions = {
@@ -24,8 +25,8 @@ const lintOptions = {
 
 const paths = {
     js: 'src/js/*.js',
-    basescss: 'src/css/base.scss',
-    allscss: 'src/css/*.scss',
+    basescss: 'src/scss/base.scss',
+    allscss: 'src/scss/*.scss',
     html: 'public/index.html',
     assets: 'public/assets'
 }
@@ -33,7 +34,7 @@ const paths = {
 gulp.task('scripts', function() {
     gulp.src(paths.js)
         .pipe(cache('js'))
-        .pipe(plumber()) // prevents an error from stopping gulp
+        .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")})) // prevents an error from stopping gulp
         .pipe(eslint(lintOptions))  // next 3 are for eslint
         .pipe(eslint.format())
         .pipe(eslint.failOnError())
@@ -41,26 +42,28 @@ gulp.task('scripts', function() {
         .pipe(babel())
         .pipe(remember('js'))
         .pipe(concat('main.js', {newLine: ';'}))
-        .pipe(uglify())
+        // .pipe(uglify())
         .pipe(rename({
             basename: "main",
             suffix: ".min",
             extname: ".js"
           }))
         .pipe(sourcemaps.write('./'))
+        .pipe(notify({message: "Generated file: <%= file.relative %>"}))
         .pipe(gulp.dest(paths.assets))
         .pipe(reload({stream: true}));
     });
 
 gulp.task('css', function() {
     gulp.src(paths.basescss)
-        .pipe(plumber())
+        .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
         .pipe(sourcemaps.init())
         .pipe(compass({
             sass: 'src/scss',
             css: paths.assets
             }))
         .pipe(prefixer(['last 2 versions']))
+        .pipe(gulp.dest(paths.assets))
         .pipe(minifyCSS())
         .pipe(rename({
             basename: "style",
@@ -68,6 +71,7 @@ gulp.task('css', function() {
             extname: ".css"
             }))
         .pipe(sourcemaps.write('./'))
+        .pipe(notify({message: "Generated file: <%= file.relative %>"}))
         .pipe(gulp.dest(paths.assets))
         .pipe(reload({stream: true}));
     });
