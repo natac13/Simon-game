@@ -1,23 +1,4 @@
-// function play(){
-//    var audio = document.getElementById("audio1");
-//    audio.play();
-//              }
-// function play2(){
-//    var audio = document.getElementById("audio2");
-//    audio.play();
-//              }
-// function play3(){
-//    var audio = document.getElementById("audio3");
-//    audio.play();
-//              }
-// function play4(){
-//    var audio = document.getElementById("audio4");
-//    audio.play();
-//              }
-
-
-$(document).ready(() => {
-    let game = {
+let game = {
         init() {
             this.cacheDOM();
             this.actions();
@@ -34,7 +15,7 @@ $(document).ready(() => {
             this.sequence = [];
             this.min = 1;
             this.max = 4;
-            this.counter = 1; // increase this each time
+            this.counter = 5; // increase this each time
             this.round = 0;
             this.generateSequence();
             this.sim(this.round);
@@ -80,6 +61,9 @@ $(document).ready(() => {
         }
 
     };
+
+$(document).ready(() => {
+
 
     game.init();
 });
