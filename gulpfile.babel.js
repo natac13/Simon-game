@@ -96,6 +96,7 @@ gulp.task('server', ['css'], function() {
 });
 
 
-gulp.task('default', ['delete', 'css', 'scripts', 'server'], function () {
-    gulp
+gulp.task('default', ['delete', 'css'], function () {
+    gulp.run('scripts');
+    gulp.run('server');
 });

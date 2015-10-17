@@ -35,8 +35,8 @@ let game = {
 
     actions() {
         this.$start.on('click', this.play.bind(game));
-        this.$board.on('mousedown', '.square', this.sound.bind(game));
-        this.$board.on('mouseup', '.square', function() {
+        this.$board.on('mouseup', '.square', this.sound.bind(game));
+        this.$board.on('mousedown', '.square', function() {
             console.log(this);
             $(this).addClass('active');
             setTimeout(() => {
@@ -51,9 +51,10 @@ let game = {
         this['$audio' + num].trigger('play');
         console.log(this.counter);
         this.userSeq.push(num);
-        this.startUserTimerWithReset();
+        // this.startUserTimerWithReset();
         if(this.test(this.sequence, this.userSeq, this.counter)) {
             clearInterval(this.userWaitID);
+            this.sim(this.counter++);
         }
 
     },
@@ -69,17 +70,21 @@ let game = {
 
     x(i) {
         if(this.sequence[i] && this.counter > 0 && this.playing) {
-            this['$audio' + this.sequence[i]].trigger('play');
-            this.$board.find('#btn' + this.sequence[i]).trigger('mouseup');
+            this.tone(i);
             this.counter--; // will stop the sim each round
 
-            this.wait();
+            //this.wait();
 
 
             this.timeID = setTimeout(() => {
                 this.sim(i+1);
             }, 1000);
         }
+    },
+
+    tone(i) {
+        this['$audio' + this.sequence[i]].trigger('play');
+        this.$board.find('#btn' + this.sequence[i]).trigger('mousedown');
     },
 
     sim(i) {
