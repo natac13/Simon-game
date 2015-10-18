@@ -53,7 +53,6 @@
                 setTimeout(() => playSound(soundId), (state.gameSpeed * index));
             }
         });
-        console.log(state.soundSequence);
     };
 
     const start = (state) => {
@@ -67,34 +66,50 @@
     };
 
     const test = (state) => {
-        if (state.soundSequence.slice(0, state.userSequence).join('') !== state.userSequence.join('')) {
+        console.log('sound ' + state.soundSequence);
+        console.log('user ' +state.userSequence);
+        console.log('slice ' + state.soundSequence.slice(state.userSequence));
+        if (state.soundSequence.slice(0, state.userSequence.length).join('') != state.userSequence.join('')) {
+            console.log('here1');
             return false;
         } else if ( state.soundSequence.length === state.userSequence.length) {
+            console.log('here2');
             state.round += 1;
             state.userSequence = [];
-            appState = start(state);
+            setTimeout(() => {
+                appState = start(state);
+            }, 1000);
+
             return true;
         }
     };
 
-    const listen = () => {
+    // const listen = () => {
         // let tmp;
-        $board.on('click', '.square', function(event) {
-            // let x = state.userSequence.concat([($(event.target).attr('id').slice(-1))]);
-            // tmp = {...state, userSequence: x};
-            appState.userSequence.push(($(event.target).attr('id').slice(-1)));
-            if(test(appState)) {
-                listen();
-            }
+    //     $board.on('mouseup', '.square', function(event) {
+    //         // let x = state.userSequence.concat([($(event.target).attr('id').slice(-1))]);
+    //         // tmp = {...state, userSequence: x};
+    //         appState.userSequence.push(($(event.target).attr('id').slice(-1)));
+    //         test(appState);
 
-        });
-    };
+    //     });
+    // };
 
     $board.find('#start').on('click', () => {
         appState = start(appState);
-        listen();
+        // listen();
+
     });
     // listen();
+    $board.on('click', '.square', function(event) {
+            // let x = state.userSequence.concat([($(event.target).attr('id').slice(-1))]);
+            // tmp = {...state, userSequence: x};
+            let num = $(event.target).attr('id').slice(-1);
+            playSound(num);
+            appState.userSequence.push(num);
+            test(appState);
+
+        });
 
     // appState = generateSequence(appState);
     // playSequence(appState.soundSequence);
