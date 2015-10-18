@@ -29,7 +29,7 @@ const paths = {
     allscss: 'src/scss/*.scss',
     html: 'public/index.html',
     assets: 'public/assets'
-}
+};
 
 gulp.task('scripts', function() {
     gulp.src(paths.js)
@@ -42,7 +42,7 @@ gulp.task('scripts', function() {
         .pipe(babel())
         .pipe(remember('js'))
         .pipe(concat('main.js', {newLine: ';'}))
-        // .pipe(uglify())
+        .pipe(uglify())
         .pipe(rename({
             basename: "main",
             suffix: ".min",
@@ -96,4 +96,7 @@ gulp.task('server', ['css'], function() {
 });
 
 
-gulp.task('default', ['delete', 'css', 'scripts', 'server']);
+gulp.task('default', ['delete', 'css'], function () {
+    gulp.run('scripts');
+    gulp.run('server');
+});

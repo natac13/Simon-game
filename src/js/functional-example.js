@@ -1,4 +1,4 @@
-(function (fu) {
+(function () {
     let appState = {
         isAiPlaying: false, // Whether the "AI" is playing the sequence
         soundSequence: [], // The list of sound IDs to play in order
