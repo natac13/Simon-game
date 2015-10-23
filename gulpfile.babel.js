@@ -1,21 +1,35 @@
 'use strict'
-
+// import gulp and gulpfile dependencies
 import gulp        from 'gulp';
 import babel       from 'gulp-babel';
-import uglify      from 'gulp-uglify';
-import rename      from 'gulp-rename';
-import del         from 'del';
-import minifyCSS   from 'gulp-minify-css';
-import sourcemaps  from 'gulp-sourcemaps';
-import eslint      from 'gulp-eslint';
-import plumber     from 'gulp-plumber';
-import prefixer    from 'gulp-autoprefixer';
-import cache       from 'gulp-cached';
-import remember    from 'gulp-remember';
-import concat      from 'gulp-concat';
-import compass     from 'gulp-compass';
-import browserSync from 'browser-sync';
+
+// import general dependencies
 import notify      from 'gulp-notify';
+import sourcemaps  from 'gulp-sourcemaps';
+import remember    from 'gulp-remember';
+import plumber     from 'gulp-plumber';
+import rename      from 'gulp-rename';
+import cache       from 'gulp-cached';
+import del         from 'del';
+
+// import server dependencies
+import browserSync from 'browser-sync';
+
+// import JS task dependencies
+import uglify      from 'gulp-uglify';
+import browserify  from 'browserify';
+import babelify    from 'babelify';
+import streamify   from 'gulp-streamify';
+import source      from 'vinyl-source-stream';
+
+// import testing dependencies
+import jasmine     from 'gulp-jasmine';
+import reporters    from 'jasmine-reporters';
+
+// import CSS dependencies
+import minifyCSS   from 'gulp-minify-css';
+import prefixer    from 'gulp-autoprefixer';
+import compass     from 'gulp-compass';
 
 const reload      = browserSync.reload;
 const lintOptions = {
@@ -28,27 +42,35 @@ const paths = {
     basescss: 'src/scss/base.scss',
     allscss: 'src/scss/*.scss',
     html: 'public/index.html',
-    assets: 'public/assets'
+    assets: 'public/assets',
+    tests: 'test/*_spec.js'
 };
 
+gulp.task('spec', function() {
+    gulp.src(paths.tests)
+        .pipe(jasmine({
+            reporter: new reporters.TerminalReporter()
+        }));
+});
+
 gulp.task('scripts', function() {
-    gulp.src(paths.js)
-        .pipe(cache('js'))
+    // gulp.src(paths.js)
+    //     .pipe(cache('js'))
+    browserify('src/js/main.js', {debug: true})
+        .transform(babelify)
+        .bundle()
+        .on('error', function (err) { console.log('Error : ' + err.message); })
+        .pipe(source('bundle.js'))
         .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")})) // prevents an error from stopping gulp
-        .pipe(eslint(lintOptions))  // next 3 are for eslint
-        .pipe(eslint.format())
-        .pipe(eslint.failOnError())
-        .pipe(sourcemaps.init())
-        .pipe(babel())
-        .pipe(remember('js'))
-        .pipe(concat('main.js', {newLine: ';'}))
-        .pipe(uglify())
+        .pipe(streamify(sourcemaps.init()))
+        // .pipe(remember('js'))
+        .pipe(streamify(uglify()))
         .pipe(rename({
             basename: "main",
             suffix: ".min",
             extname: ".js"
           }))
-        .pipe(sourcemaps.write('./'))
+        .pipe(streamify(sourcemaps.write('./')))
         .pipe(notify({message: "Generated file: <%= file.relative %>"}))
         .pipe(gulp.dest(paths.assets))
         .pipe(reload({stream: true}));
@@ -82,7 +104,7 @@ gulp.task('delete', function() {
             });
     });
 
-gulp.task('server', ['css'], function() {
+gulp.task('server', ['css', 'spec'], function() {
 
     browserSync({
         server: "./public/",
@@ -90,13 +112,11 @@ gulp.task('server', ['css'], function() {
 
     });
 
-    gulp.watch(paths.js, ['scripts']);
+    gulp.watch(paths.js, ['scripts', 'spec']);
     gulp.watch(paths.allscss, ['css']);
     gulp.watch(paths.html).on('change', reload);
 });
 
 
-gulp.task('default', ['delete', 'css'], function () {
-    gulp.run('scripts');
-    gulp.run('server');
+gulp.task('default', ['delete', 'css', 'scripts', 'server'], function () {
 });
