@@ -14,7 +14,8 @@ export default function playSequence(state, wrapper) {
     console.log(state.gameSpeed);
     state.soundSequence.forEach((soundId, index) => {
         if(index < state.round) {
-            setTimeout(() => playSound(soundId, wrapper), (state.gameSpeed * index));
+            setTimeout(() => playSound(soundId, wrapper),
+                (state.gameSpeed * index));
         }
     });
 };
