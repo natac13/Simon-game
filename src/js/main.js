@@ -1,5 +1,14 @@
+ /*** Sequence ***/
 import range  from './rangeGen';
 import random from './randomNum';
+
+ /*** State setup ***/
+import setGameSpeed from './gameSpeed';
+
+ /*** Actions ***/
+import playSequence from './playSequence';
+import playSound    from './playSound';
+import highlight    from './highlight';
 
 (function() {
     let appState = {
@@ -13,7 +22,7 @@ import random from './randomNum';
 
 
     const generateRandomSequence = () => range(1, 20).map(() => random(1, 4));
-    console.log(generateRandomSequence());
+
 
     /*** Reducers ***/
 
@@ -21,46 +30,6 @@ import random from './randomNum';
     const startAiPlaying = (state) => ({...state, isAiPlaying: true});
     const stopAiPlaying = (state) => ({...state, isAiPlaying: false});
 
-    /*** Side effects ***/
-
-    const highlight = (soundId) => {
-        $board.find(`#btn${soundId}`).addClass('active');
-        setTimeout(() => {
-            $board.find(`#btn${soundId}`).removeClass('active');
-        }, 400);
-    };
-
-    const playSound = (soundId) => {
-        console.log('playing ' + soundId);
-        //$(`[data-sound-id="${soundId}"]`).trigger('play');
-        highlight(soundId);
-        $board.find(`#audio${soundId}`).trigger('play');
-    };
-
-    const setGameSpeed = (state) => {
-        let len = state.soundSequence.length;
-        let speed = 1300;
-        if (len >= 5) {
-            speed = 1000;
-        }
-        if (len >= 9) {
-            speed = 750;
-        }
-        if (len >= 13) {
-            speed = 500;
-        }
-        return {...state, gameSpeed: speed};
-    };
-
-    const playSequence = (state) => {
-        state = setGameSpeed(state);
-        console.log(state.gameSpeed);
-        state.soundSequence.forEach((soundId, index) => {
-            if(index < state.round) {
-                setTimeout(() => playSound(soundId), (state.gameSpeed * index));
-            }
-        });
-    };
 
     const start = (state) => {
 
@@ -68,7 +37,7 @@ import random from './randomNum';
         console.log(x);
         let tmp = ({...state, soundSequence: x});
         // let tmp = appState.round === 1 ? generateSequence(appState) : state;
-        playSequence(tmp);
+        playSequence(tmp, $board);
         return tmp;
 
     };
@@ -125,7 +94,7 @@ import random from './randomNum';
             // let x = state.userSequence.concat([($(event.target).attr('id').slice(-1))]);
             // tmp = {...state, userSequence: x};
             let num = $(event.target).attr('id').slice(-1);
-            playSound(num);
+            playSound(num, $board);
             appState.userSequence.push(num);
             test(appState);
 

@@ -113,6 +113,7 @@ gulp.task('server', ['css', 'spec'], function() {
     });
 
     gulp.watch(paths.js, ['scripts', 'spec']);
+    gulp.watch(paths.tests, ['spec']);
     gulp.watch(paths.allscss, ['css']);
     gulp.watch(paths.html).on('change', reload);
 });
