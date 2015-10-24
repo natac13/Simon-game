@@ -1,3 +1,4 @@
 h1 {
-    @include adjust-font-size-to(45px);
+    @include adjust-font-size-to(70px);
+    color: #bbb;
 }

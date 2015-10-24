@@ -12,10 +12,11 @@ import playSound    from './playSound';
 export default function playSequence(state, wrapper) {
     state = setGameSpeed(state);
     console.log(state.gameSpeed);
+    console.log(state.soundSequence);
     state.soundSequence.forEach((soundId, index) => {
         if(index < state.round) {
-            setTimeout(() => playSound(soundId, wrapper),
-                (state.gameSpeed * index));
+            let speed = state.gameSpeed * index;
+            setTimeout(() => playSound(soundId, wrapper), speed);
         }
     });
 };

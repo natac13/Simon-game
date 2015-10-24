@@ -3,6 +3,11 @@ html {
   line-height: 1.75em;
 }
 
+body {
+  font-family: 'Dhurjati', sans-serif;
+  background: rgba(17, 17, 17, 0.8);
+}
+
 .btn {
   width: 100%;
   height: 10em;
@@ -12,6 +17,25 @@ html {
 }
 
 h1 {
-  font-size: 2.8125em;
-  line-height: 1.24444em;
+  font-size: 4.375em;
+  line-height: 1.2em;
+  color: #bbb;
+}
+
+#game-board {
+  font-size: 1.5em;
+  line-height: 1.16667em;
+  background: #AA8D70;
+  padding: 2em;
+  height: 30em;
+  border-radius: 30%;
+  position: relative;
+  text-align: center;
+  margin: auto;
+  box-shadow: 0px 0px 12px #222;
+}
+#game-board .inner {
+  margin: auto;
+  top: 10vh;
+  position: relative;
 }
