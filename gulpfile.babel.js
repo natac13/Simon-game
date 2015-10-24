@@ -6,10 +6,8 @@ import babel       from 'gulp-babel';
 // import general dependencies
 import notify      from 'gulp-notify';
 import sourcemaps  from 'gulp-sourcemaps';
-import remember    from 'gulp-remember';
 import plumber     from 'gulp-plumber';
 import rename      from 'gulp-rename';
-import cache       from 'gulp-cached';
 import del         from 'del';
 
 // import server dependencies
@@ -55,7 +53,6 @@ gulp.task('spec', function() {
 
 gulp.task('scripts', function() {
     // gulp.src(paths.js)
-    //     .pipe(cache('js'))
     browserify('src/js/main.js', {debug: true})
         .transform(babelify)
         .bundle()
@@ -63,7 +60,6 @@ gulp.task('scripts', function() {
         .pipe(source('bundle.js'))
         .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")})) // prevents an error from stopping gulp
         .pipe(streamify(sourcemaps.init()))
-        // .pipe(remember('js'))
         .pipe(streamify(uglify()))
         .pipe(rename({
             basename: "main",
