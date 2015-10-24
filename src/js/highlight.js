@@ -6,8 +6,8 @@
  * @param  {jQuery element} wrapper around the panel elements and audio elements
  */
 export default function highlight(soundId, wrapper) {
-    wrapper.find(`#btn${soundId}`).addClass('active');
+    wrapper.find(`#btn${soundId}`).addClass('highlight');
     setTimeout(() => {
-        wrapper.find(`#btn${soundId}`).removeClass('active');
-    }, 400);
+        wrapper.find(`#btn${soundId}`).removeClass('highlight');
+    }, 550);
 }

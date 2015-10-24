@@ -16,23 +16,27 @@
     <h1 class="col-xs-12">Natac's Simon Repeat Game</h1>
   </header><!-- /header -->
 
-  <section id="game-board">
+  <section id="game-board" class="text-center">
     <div class="inner">
       <div class="row">
-        <div class="col-xs-3">
-          <input type="button" class="btn btn-lg btn-danger square"  id="btn1">
+        <div class="col-sm-3">
+          <input type="button" class="btn btn-lg btn-danger square"  id="btn1"
+            disabled="disabled">
           <audio id="audio1" src="https://s3.amazonaws.com/freecodecamp/simonSound1.mp3" ></audio>
         </div>
-        <div class="col-xs-3">
-          <input type="button" class="btn btn-lg btn-warning square" id="btn2">
+        <div class="col-sm-3">
+          <input type="button" class="btn btn-lg btn-warning square" id="btn2"
+            disabled="disabled">
           <audio id="audio2" src="https://s3.amazonaws.com/freecodecamp/simonSound2.mp3" ></audio>
         </div>
-        <div class="col-xs-3">
-          <input type="button" class="btn btn-lg btn-success square" id="btn3">
+        <div class="col-sm-3">
+          <input type="button" class="btn btn-lg btn-success square" id="btn3"
+            disabled="disabled">
           <audio id="audio3" src="https://s3.amazonaws.com/freecodecamp/simonSound3.mp3" ></audio>
         </div>
-        <div class="col-xs-3">
-          <input type="button" class="btn btn-lg btn-primary square" id="btn4">
+        <div class="col-sm-3">
+          <input type="button" class="btn btn-lg btn-primary square" id="btn4"
+            disabled="disabled">
           <audio id="audio4" src="https://s3.amazonaws.com/freecodecamp/simonSound4.mp3" ></audio>
         </div>
       </div>
@@ -45,8 +49,8 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-xs-6">Round</div>
-        <div class="col-xs-6" id="round">--</div>
+        <div class="col-xs-6">Round: <span id="round">--</span></div>
+        <div class="col-xs-6">Status: <span id="status">--</span></div>
       </div>
     </div>
   </section>

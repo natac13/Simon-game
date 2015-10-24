@@ -1,18 +1,66 @@
 #game-board {
-    @include adjust-font-size-to(24px);
+    @include adjust-font-size-to(50px);
     background: $board-color;
     padding: 2em;
-    height: 30em;
+    height: 15em;
     border-radius: 30%;
     position: relative;
     text-align: center;
     margin: auto;
     box-shadow: 0px 0px 12px #222;
 
+    @media only screen and (max-width: 699px) {
+            @include adjust-font-size-to(38px);
+            height: 30em;
+        }
+
     .inner {
         margin: auto;
-        top: 10vh;
+        top: 1em;
         position: relative;
 
     }
+
+    .btn-info {
+        @include adjust-font-size-to(15px);
+        margin-top: 1em;
+        height: 2em;
+        box-shadow: 0 0 15px #333;
+        @media only screen and (max-width: 699px) {
+            @include adjust-font-size-to(15px);
+            height: 2em;
+        }
+    }
+
+    .square {
+        box-shadow: 1px 1px 5px #333;
+        transition: all 0.3s linear;
+        opacity: 0.4;
+        position: relative;
+
+        @media only screen and (max-width: 699px) {
+            height: 75%;
+        }
+    }
+
+    .square.highlight {
+        box-shadow: 1px 1px 20px #333;
+        opacity: 1;
+    }
+
+    // #btn1 {
+    //     background-color: #FFF
+    // }
+
+    // #btn2 {
+
+    // }
+
+    // #btn3 {
+
+    // }
+
+    // #btn4 {
+
+    // }
 }
